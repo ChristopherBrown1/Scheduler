@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1400.0" style="-fx-background-color: #63E4EE; -fx-border-color: #D5F5E3; -fx-border-width: 3;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane minHeight="40.0" prefHeight="50.0" prefWidth="1400.0" style="-fx-background-color: #F7DC6F; -fx-border-color: #F7DC65;">
+         <children>
+            <HBox prefHeight="52.0" prefWidth="1400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <AnchorPane prefHeight="30.0" prefWidth="851.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="30.0" prefWidth="849.0" text="Scheduler" textAlignment="CENTER" underline="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <font>
+                              <Font name="Times New Roman" size="25.0" />
+                           </font>
+                           <textFill>
+                              <LinearGradient endX="1.0" endY="1.0">
+                                 <stops>
+                                    <Stop color="#ab2e2e" />
+                                    <Stop color="#d70808" offset="0.9962406015037594" />
+                                    <Stop color="#d70808" offset="1.0" />
+                                 </stops>
+                              </LinearGradient>
+                           </textFill>
+                           <padding>
+                              <Insets left="400.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <VBox prefHeight="37.0" prefWidth="540.0">
+                     <children>
+                        <Label text="Time until Next Appointment" />
+                        <ProgressBar prefHeight="20.0" prefWidth="245.0" progress="0.0" />
+                     </children>
+                     <padding>
+                        <Insets left="200.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <SplitPane dividerPositions="0.14163090128755365, 0.7474964234620887" prefWidth="1000.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox prefHeight="552.0" prefWidth="181.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <DialogPane minHeight="-Infinity" prefHeight="27.0" prefWidth="181.0" style="-fx-background-color: #E5E5E5; -fx-border-color: #E0E0E0;">
+                           <header>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="179.0" text="CustomerDetails" />
+                           </header>
+                        </DialogPane>
+                        <ListView fx:id="customers_list" prefHeight="932.0" prefWidth="221.0" style="-fx-background-color: #63E4EE; -fx-control-inner-background: #63E4EE; -fx-control-inner-background-alt: derive(-fx-control-inner-background, 35%);" />
+                     </children>
+                  </VBox>
+                  <Circle centerX="12.0" centerY="1015.0" disable="true" fill="#63e4ee" opacity="0.18" radius="138.0" scaleX="2.0" scaleY="2.0" strokeType="INSIDE" strokeWidth="3.0" AnchorPane.bottomAnchor="-205.0">
+                     <stroke>
+                        <LinearGradient endX="0.8653846153846154" endY="0.07211538461538466" startY="0.5673076923076923">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="#5b2727" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </stroke>
+                  </Circle>
+                  <Line disable="true" endX="105.0" endY="264.0" layoutX="-99.0" layoutY="519.0" opacity="0.15" scaleX="2.0" scaleY="2.0" startX="105.0" startY="242.0" stroke="#401515" strokeWidth="6.0" AnchorPane.bottomAnchor="161.0" />
+                  <Line endX="89.0" endY="247.0" layoutX="121.0" layoutY="622.0" opacity="0.15" scaleX="2.0" scaleY="2.0" startX="100.0" startY="237.0" stroke="#3c1515" strokeWidth="6.0" AnchorPane.bottomAnchor="74.75735473632812" />
+                  <Label disable="true" layoutX="-6.0" layoutY="508.0" opacity="0.15" scaleX="2.0" scaleY="2.0" text="12" textFill="#391515" AnchorPane.bottomAnchor="110.0">
+                     <font>
+                        <Font name="Ayuthaya" size="20.0" />
+                     </font>
+                  </Label>
+                  <Line disable="true" endX="121.0" endY="158.0" layoutX="-16.0" layoutY="784.0" opacity="0.15" scaleX="2.0" scaleY="2.0" startX="33.0" startY="196.0" strokeWidth="4.0" AnchorPane.bottomAnchor="-39.0">
+                     <stroke>
+                        <LinearGradient endX="0.8653846153846154" endY="0.07211538461538466" startY="0.5673076923076923">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="#391818" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </stroke>
+                  </Line>
+                  <Line disable="true" endX="42.0" endY="167.0" layoutX="-14.0" layoutY="658.0" opacity="0.15" scaleX="2.0" scaleY="2.0" startX="27.0" startY="248.0" strokeWidth="4.0" AnchorPane.bottomAnchor="20.0">
+                     <stroke>
+                        <LinearGradient endX="0.8653846153846154" endY="0.07211538461538466" startY="0.5673076923076923">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="#391818" offset="1.0" />
+                           </stops>
+                        </LinearGradient>
+                     </stroke>
+                  </Line>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="432.0" SplitPane.resizableWithParent="false">
+               <children>
+                  <TableView fx:id="appointments_table" fixedCellSize="40.0" minHeight="100.0" prefHeight="907.0" prefWidth="432.0" style="-fx-background-color: #63E4EE; -fx-control-inner-background: #63E4EE; -fx-control-inner-background-alt: derive(-fx-control-inner-background, 35%);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columns>
+                        <TableColumn fx:id="start" prefWidth="119.0" text="Start" />
+                        <TableColumn fx:id="end" prefWidth="116.0" text="End" />
+                        <TableColumn fx:id="customerNameTable" prefWidth="135.0" text="Customer" />
+                        <TableColumn fx:id="title" prefWidth="139.0" text="Appointment Title" />
+                        <TableColumn fx:id="type" prefWidth="126.0" text="Type" />
+                        <TableColumn fx:id="location" prefWidth="117.0" text="Location" />
+                        <TableColumn fx:id="description" prefWidth="204.0" text="Description" />
+                        <TableColumn fx:id="contact" prefWidth="147.0" text="Contact" />
+                        <TableColumn fx:id="url" prefWidth="147.0" text="URL" />
+                     </columns>
+                  </TableView>
+                  <ToolBar layoutY="861.0" minHeight="35.0" prefHeight="44.0" prefWidth="749.0" style="-fx-background-color: #F7DC6F;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                    <items>
+                        <RadioButton fx:id="Week_View" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#Toggle_Week_Week" prefHeight="46.0" selected="true" text="Week">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="ViewByWeekMonth" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="Month_View" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#Toggle_Month_Clicked" prefHeight="46.0" text="Month" toggleGroup="$ViewByWeekMonth" />
+                        <Label fx:id="username_label" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" text="Signed in as: Username here...">
+                           <padding>
+                              <Insets left="125.0" />
+                           </padding>
+                        </Label>
+                    </items>
+                  </ToolBar>
+               </children>
+            </AnchorPane>
+            <SplitPane prefHeight="973.0" prefWidth="685.0">
+               <items>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #63E4EE;">
+                     <children>
+                        <VBox prefWidth="352.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <DialogPane minHeight="-Infinity" prefHeight="27.0" prefWidth="381.0" style="-fx-background-color: #E5E5E5; -fx-border-color: #E0E0E0;">
+                                 <header>
+                                    <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="350.0" text="Customer Details" />
+                                 </header>
+                              </DialogPane>
+                              <AnchorPane prefHeight="64.0" prefWidth="352.0">
+                                 <children>
+                                    <Label fx:id="user_fields_label" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="352.0" text="Selected Customer Information" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <font>
+                                          <Font name="Times New Roman" size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </AnchorPane>
+                              <GridPane prefHeight="875.0" prefWidth="495.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="185.95843505859375" minWidth="10.0" prefWidth="119.1573486328125" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.65460205078125" minWidth="10.0" prefWidth="261.8426513671875" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Name:" />
+                                    <Label text="Street:" GridPane.rowIndex="1" />
+                                    <Label text="City:" GridPane.rowIndex="2" />
+                                    <Label text="State:" GridPane.rowIndex="3" />
+                                    <Label text="Zip:" GridPane.rowIndex="5" />
+                                    <Label text="Phone:" GridPane.rowIndex="6" />
+                                    <TextField fx:id="name" disable="true" prefWidth="133.0" style="-fx-background-radius: 10;" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="phone" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="zip" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="state" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="street" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField fx:id="city" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                                       <children>
+                                          <HBox prefHeight="37.0" prefWidth="247.0">
+                                             <children>
+                                                <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#cancel_update" text="Cancel" visible="false">
+                                                   <HBox.margin>
+                                                      <Insets left="20.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                                <Button fx:id="save" mnemonicParsing="false" onMouseClicked="#save_user_data" text="Save" visible="false">
+                                                   <HBox.margin>
+                                                      <Insets left="90.0" />
+                                                   </HBox.margin>
+                                                </Button>
+                                             </children>
+                                          </HBox>
+                                          <Label fx:id="error_customer_label" alignment="CENTER" contentDisplay="CENTER" prefHeight="32.0" prefWidth="236.0" text="Error:" textFill="RED" visible="false">
+                                             <VBox.margin>
+                                                <Insets left="10.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="Times New Roman" size="16.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <TextField fx:id="country" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Country:" GridPane.rowIndex="4" />
+                                    <Label text="Active:" GridPane.rowIndex="7" />
+                                    <TextField fx:id="active" disable="true" style="-fx-background-radius: 10;" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                                       <GridPane.margin>
+                                          <Insets right="20.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </items>
+            </SplitPane>
+        </items>
+      </SplitPane>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <ToolBar minWidth="175.0" prefHeight="75.0" prefWidth="950.0" style="-fx-background-color: #F7DC6F; -fx-border-color: #D5F5E3; -fx-border-width: 2;">
+              <items>
+                <Button fx:id="add_customer" mnemonicParsing="false" onMouseClicked="#Add_User_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Add Customer" textFill="#441515" />
+                  <Button mnemonicParsing="false" onMouseClicked="#Delete_User_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Delete Customer" textFill="#441515" />
+              </items>
+            </ToolBar>
+            <ToolBar minWidth="300.0" prefHeight="75.0" prefWidth="1400.0" style="-fx-background-color: #F7DC6F; -fx-border-color: #D5F5E3; -fx-border-width: 2;">
+               <items>
+                  <Button mnemonicParsing="false" onMouseClicked="#Add_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Add Appointment" textFill="#441515" />
+                  <Button mnemonicParsing="false" onMouseClicked="#Update_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Update Appointment" textFill="#441515" />
+                  <Button mnemonicParsing="false" onMouseClicked="#Delete_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Delete Appointement" textFill="#441515" />
+               </items>
+            </ToolBar>
+            <ToolBar minWidth="300.0" prefHeight="75.0" prefWidth="300.0" style="-fx-background-color: #F7DC6F; -fx-border-color: #D5F5E3; -fx-border-width: 2;">
+               <items>
+                  <Button fx:id="update_customer" mnemonicParsing="false" onMouseClicked="#Update_User_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Update Customer" textFill="#441515" />
+               </items>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+            </ToolBar>
+         </children>
+      </HBox>
+   </children>
+</VBox>
