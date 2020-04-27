@@ -153,7 +153,7 @@ public class AddressDao {
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
 
-            String currentDate = Time.currentDate();
+            String currentDate = Time.currentUTCDate();
 
             ps.setString(1, addressStreet);
             ps.setString(2, addressState);

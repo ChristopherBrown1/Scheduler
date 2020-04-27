@@ -118,8 +118,8 @@ public class CountryDao {
                 System.out.println("Country result is empty");                
             }
             else {                
-            // here is the problem
-            int countryId = result.getInt("countryId");            
+                // here is the problem
+                int countryId = result.getInt("countryId");            
                                     
             return countryId;
             }
@@ -142,7 +142,7 @@ public class CountryDao {
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
 
-            String currentDate = Time.currentDate();
+            String currentDate = Time.currentUTCDate();
 
             ps.setString(1, countryName); 
             ps.setString(2, currentDate); // need to change this java.util.Date cannot be cast to java.sql.Date

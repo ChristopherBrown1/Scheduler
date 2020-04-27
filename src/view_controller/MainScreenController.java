@@ -15,8 +15,13 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.application.Platform;
@@ -25,15 +30,19 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import model.Address;
 import model.Appointment;
 import model.City;
@@ -96,26 +105,28 @@ public class MainScreenController implements Initializable {
     private int currentUserId;
     int selectedindex;
     int lastClicked = -1;
+    int appointmentlastClicked = -1;
+    
     @FXML
     private TextField country;
     @FXML
-    private TableColumn<Appointment, LocalDate> start;
+    private TableColumn<Appointment, Calendar> start;
     @FXML
-    private TableColumn<?, ?> title;
+    private TableColumn<Appointment, String> title;
     @FXML
-    private TableColumn<?, ?> end;
+    private TableColumn<Appointment, Calendar> end;
     @FXML
-    private TableColumn<?, ?> customerNameTable;
+    private TableColumn<Appointment, String> customerNameTable;
     @FXML
-    private TableColumn<?, ?> type;
+    private TableColumn<Appointment, String> type;
     @FXML
-    private TableColumn<?, ?> location;
+    private TableColumn<Appointment, String> location;
     @FXML
-    private TableColumn<?, ?> description;
+    private TableColumn<Appointment, String> description;
     @FXML
-    private TableColumn<?, ?> contact;
+    private TableColumn<Appointment, String> contact;
     @FXML
-    private TableColumn<?, ?> url;
+    private TableColumn<Appointment, String> url;
     private String userName;
     private String loginTime;
     @FXML
@@ -124,6 +135,52 @@ public class MainScreenController implements Initializable {
     private Button add_customer;
     @FXML
     private Button update_customer;
+    @FXML
+    private AnchorPane modifyAppointmentView;
+    @FXML
+    private TextField appointmentCustomerName;
+    @FXML
+    private TextField appointmentTitle;
+    @FXML
+    private TextField appointmentLocation;
+    @FXML
+    private TextField appointmentContact;
+    @FXML
+    private TextField appointmentType;
+    @FXML
+    private TextField appointmentURL;
+    @FXML
+    private Button appointmentCancel;
+    @FXML
+    private Button appointmentSave;
+    @FXML
+    private TextArea appointmentDescription;
+    @FXML
+    private DatePicker startDate;
+    @FXML
+    private ComboBox<Integer> startHour;
+    @FXML
+    private ComboBox<Integer> startMinute;
+    @FXML
+    private ComboBox<String> startAMPM;
+    @FXML
+    private DatePicker endDate;
+    @FXML
+    private ComboBox<Integer> endHour;
+    @FXML
+    private ComboBox<Integer> endMinute;
+    @FXML
+    private ComboBox<String> endAMPM;
+    @FXML
+    private Label error_appointment_label;
+    @FXML
+    private Button add_appointment;
+    @FXML
+    private Button update_appointment;
+    @FXML
+    private Label timeUntilNextAppointment;
+    @FXML
+    private RadioButton All_View;
     
     public MainScreenController(int uId, String userName) {
         currentUserId = uId;
@@ -143,6 +200,26 @@ public class MainScreenController implements Initializable {
         // Is ArrayIndexOutOfBoundsException: -1 because the listener?
         
         loginTime = Time.currentDateTime();
+        long time = AppointmentDao.getNextAppointmentStartsIn(currentUserId);
+        System.out.println(time + " minutes until next meeting...");
+        if (time <= 15){
+            timeUntilNextAppointment.setText(time + " minutes until next Appointment!");
+        }
+                
+        startDate.setValue(LocalDate.now());
+        endDate.setValue(LocalDate.now());
+        
+        for(int i=1; i<13; i++){
+            startHour.getItems().add(i);            
+            endHour.getItems().add(i);
+        }
+                for(int i=0; i<60; i++){
+            startMinute.getItems().add(i);           
+            endMinute.getItems().add(i);            
+        }
+        startAMPM.getItems().addAll("AM", "PM");
+        endAMPM.getItems().addAll("AM", "PM");
+        
         
         set_customers_list();
         set_appointment_table();
@@ -151,20 +228,41 @@ public class MainScreenController implements Initializable {
         
         customers_list.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> {
             set_selection_fields();
-            //System.out.println(oldvalue);
+            //System.out.println(newvalue);
                 });
         
         add_customer.setOnAction(e->lastClicked=1);
         update_customer.setOnAction(e->lastClicked=2);
         
+        add_appointment.setOnAction(e->appointmentlastClicked=1);
+        update_appointment.setOnAction(e->appointmentlastClicked=2);                
         
     }
     
     public void set_appointment_table() {
         
-        //Sets up customer list        
-        ObservableList<Appointment> list = AppointmentDao.getAllAppointmentsJoined(currentUserId);
-        allAppointments = list;
+        //Sets up appointment table
+        
+        RadioButton selectedRadioButton = (RadioButton) ViewByWeekMonth.getSelectedToggle();
+        String toogleGroupValue = selectedRadioButton.getText();
+        
+        
+        if(toogleGroupValue.equalsIgnoreCase("All")){
+            System.out.println("You have ALL selected......");       
+            ObservableList<Appointment> list = AppointmentDao.getAllAppointmentsJoined(currentUserId);        
+            allAppointments = list;
+        }
+        else if(toogleGroupValue.equalsIgnoreCase("Week")){
+            System.out.println("You have WEEK selected.......");
+            ObservableList<Appointment> list = AppointmentDao.getWeekAppointmentsJoined(currentUserId);        
+            allAppointments = list;            
+        }
+        else if(toogleGroupValue.equalsIgnoreCase("Month")){
+            System.out.println("You have Month selected......");
+            ObservableList<Appointment> list = AppointmentDao.getMonthAppointmentsJoined(currentUserId);        
+            allAppointments = list;            
+        }
+        
         start.setCellValueFactory(new PropertyValueFactory<>("start"));
         end.setCellValueFactory(new PropertyValueFactory<>("end"));        
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -175,8 +273,32 @@ public class MainScreenController implements Initializable {
         contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         url.setCellValueFactory(new PropertyValueFactory<>("url")); 
         
-      
-
+        
+        DateFormat dateFormat = DateFormat.getDateInstance();
+        SimpleDateFormat dateForm = new SimpleDateFormat("hh:mm a  |  MMM, dd YYYY");
+        start.setCellFactory(col -> new TableCell<Appointment, Calendar>() {
+            @Override
+            protected void updateItem(Calendar date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty) {
+                    setText(null);
+                } else {                    
+                    setText(dateForm.format(Time.calendarToString(date)));
+                }
+            }
+        });
+        
+        end.setCellFactory(col -> new TableCell<Appointment, Calendar>() {
+            @Override
+            protected void updateItem(Calendar date, boolean empty) {
+                super.updateItem(date, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(dateForm.format(Time.calendarToString(date)));
+                }
+            }
+        });
         
         
         appointments_table.setItems(allAppointments);
@@ -231,7 +353,7 @@ public class MainScreenController implements Initializable {
         this.country.setText(country);
         active.setText(customerActive); 
         
-        
+        appointmentCustomerName.setText(customerName);
         
     }
 
@@ -260,21 +382,7 @@ public class MainScreenController implements Initializable {
         System.out.println("In set_userId : " + uId);
     }
     
-    
-// --------------------------------------------------------------------------           
-   
-//    public int get_userId(){
-//        System.out.println("In get_userId : " + currentUserId);        
-//        return currentUserId;
-//    }    
-    
-    @FXML
-    private void Toggle_Week_Week(javafx.scene.input.MouseEvent event) {
-    }
-
-    @FXML
-    private void Toggle_Month_Clicked(javafx.scene.input.MouseEvent event) {
-    }
+       
 
     @FXML
     private void Add_User_Clicked(javafx.scene.input.MouseEvent event) {        
@@ -292,29 +400,87 @@ public class MainScreenController implements Initializable {
     @FXML
     private void Delete_User_Clicked(javafx.scene.input.MouseEvent event) {
         Customer selectedCustomer = allCustomers.get(selectedindex);
+        
+        AppointmentDao.removeAppointmentsWithCustomerId(selectedCustomer.getCustomerId());
+        appointments_table.getItems().clear();
+        allAppointments.clear();
+        set_appointment_table();        
+        
         boolean customerDeleted = CustomerDao.deleteSelectedCustomer(selectedCustomer);
         if(customerDeleted) {
             clear_customer_fields();                
-            allCustomerNames.clear(); // The error is here........
+            allCustomerNames.clear();
             set_customers_list();
             
-        }
-        
+            if(allCustomers.size()>0){
+                customers_list.getSelectionModel().select(0);
+                
+            }
+        }        
         
     }
 
     @FXML
     private void Add_Appointment_Clicked(javafx.scene.input.MouseEvent event) throws SQLException {
+        appointments_table.setVisible(false);
+        modifyAppointmentView.setVisible(true);
+        
+        startHour.setValue(3);
+        endHour.setValue(4);
+        startMinute.setValue(30);
+        endMinute.setValue(30);
+        startAMPM.setValue("PM");
+        endAMPM.setValue("PM");
+        
+    }
+    
+    @FXML
+    private void Update_Appointment_Clicked(javafx.scene.input.MouseEvent event) {
+        
+        Appointment selectedAppointment = appointments_table.getSelectionModel().getSelectedItem();
 
+                
+        int customerId = selectedAppointment.getCustomerId();        
+        int customerIndex = getCustomerIndex(customerId);  
+        customers_list.getSelectionModel().select(customerIndex); // -----
+                
+        appointmentTitle.setText(selectedAppointment.getTitle());
+        appointmentDescription.setText(selectedAppointment.getDescription());
+        appointmentLocation.setText(selectedAppointment.getLocation());
+        appointmentContact.setText(selectedAppointment.getContact());
+        appointmentType.setText(selectedAppointment.getType());
+        appointmentURL.setText(selectedAppointment.getUrl());
+        
+        //dateStringtoLocalDate
+        Calendar startCal = selectedAppointment.getStart();
+        Calendar endCal = selectedAppointment.getEnd();
+        int[] sDate = Time.calendarToArray(startCal);
+        int[] eDate = Time.calendarToArray(endCal);
+        
+        startDate.setValue(Time.arrayToLD(sDate)); 
+        startHour.setValue(Time.arrayToHour(sDate));
+        startMinute.setValue(Time.arrayToMin(sDate));
+        startAMPM.setValue(Time.arrayToAMPM(sDate));
+        
+        endDate.setValue(Time.arrayToLD(eDate)); 
+        endHour.setValue(Time.arrayToHour(eDate));
+        endMinute.setValue(Time.arrayToMin(eDate));
+        endAMPM.setValue(Time.arrayToAMPM(eDate));
+        
+        appointments_table.setVisible(false);
+        modifyAppointmentView.setVisible(true);
         
     }
 
     @FXML
-    private void Update_Appointment_Clicked(javafx.scene.input.MouseEvent event) {
-    }
-
-    @FXML
     private void Delete_Appointment_Clicked(javafx.scene.input.MouseEvent event) {
+        Appointment selectedAppointment = appointments_table.getSelectionModel().getSelectedItem();
+        AppointmentDao.deleteAppointment(selectedAppointment.getAppointmentId());
+                
+        appointments_table.getItems().clear();
+        allAppointments.clear();
+        set_appointment_table();        
+        
     }
 
     private void disable_customer_fields() {
@@ -379,7 +545,7 @@ public class MainScreenController implements Initializable {
         user_fields_label.setText("Selected Customer Information");
     }
 
-    private boolean check_valid_fields() {
+    private boolean check_valid_customer_fields() {
         TextField user_fields[] = {name, phone, zip, state, street, city, country, active};
         
         for (int i=0; i < user_fields.length; i++) {
@@ -442,10 +608,12 @@ public class MainScreenController implements Initializable {
 // send username as a parameter
         
         
-        if (check_valid_fields()) {
+        if (check_valid_customer_fields()) {
             
             if(lastClicked == 1) {
                 saveCustomer();
+                customers_list.getSelectionModel().select(allCustomers.size()-1);
+                                
             }
             else if (lastClicked == 2) {
                 updateCustomer();
@@ -485,6 +653,194 @@ public class MainScreenController implements Initializable {
         */
 
     }
+    
+    private boolean check_valid_appointment_fields() {
+        TextField user_fields[] = {appointmentCustomerName, appointmentType};
+        
+        if(startDate.getValue() == null || endDate.getValue() == null) {
+            error_appointment_label.setVisible(true);
+            error_appointment_label.setText("Please choose a start and end date.");
+            return false;
+        }
+        else if(appointmentCustomerName.getText().isEmpty()){
+            error_appointment_label.setVisible(true);
+            error_appointment_label.setText("Error: Customer must be selected.");
+            return false;
+        }
+        else if(appointmentType.getText().isEmpty()){
+            error_appointment_label.setVisible(true);
+            error_appointment_label.setText("Error: Appointment Type must be entered.");
+            return false;
+        }        
+
+        error_appointment_label.setVisible(false);
+        return true;        
+    }
+    
+    private void set_optional_empty_appointment_fields() {
+        TextField user_fields[] = {appointmentTitle, appointmentLocation, appointmentContact, appointmentURL};
+        
+        for (int i=0; i < user_fields.length; i++) {
+            if (user_fields[i].getText().isEmpty() || appointmentDescription.getText().isEmpty()) {
+
+            }           
+        }
+        if(appointmentTitle.getText().isEmpty()) {
+            appointmentTitle.setText("N/A");
+        }        
+        if(appointmentDescription.getText().isEmpty()) {
+            appointmentDescription.setText("N/A");
+        }
+        if(appointmentLocation.getText().isEmpty()) {
+            appointmentLocation.setText("N/A");
+        }
+        if(appointmentContact.getText().isEmpty()) {
+            appointmentContact.setText("N/A");
+        }
+        if(appointmentURL.getText().isEmpty()) {
+            appointmentURL.setText("N/A");
+        }
+    }    
+
+    @FXML
+    private void appointmentCancel(javafx.scene.input.MouseEvent event) {
+
+
+        modifyAppointmentView.setVisible(false);                
+        appointments_table.setVisible(true);
+        error_appointment_label.setVisible(false);
+
+    }
+    
+    private void saveAppointment() {
+
+        int selectedCustomerId = allCustomers.get(selectedindex).getCustomerId();
+        int userId = currentUserId;
+        String appointmentTitle = this.appointmentTitle.getText();
+        String appointmentDescription = this.appointmentDescription.getText();
+        String appointmentLocation = this.appointmentLocation.getText();
+        String appointmentContact = this.appointmentContact.getText();
+        String appointmentType = this.appointmentType.getText();
+        String appointmentUrl = this.appointmentURL.getText();
+        
+        LocalDate sDate = startDate.getValue();
+        int sHour = startHour.getValue();
+        int sMinute = startMinute.getValue();
+        String sAMPM = startAMPM.getValue();
+        LocalDate eDate = endDate.getValue();
+        int eHour = endHour.getValue();
+        int eMinute = endMinute.getValue();
+        String eAMPM = endAMPM.getValue();
+        
+        String startTime = Time.dateToUTCString(sDate, sHour, sMinute, sAMPM);
+        String endTime = Time.dateToUTCString(eDate, eHour, eMinute, eAMPM);        
+        
+        AppointmentDao.setAppointment(selectedCustomerId, userId, appointmentTitle, appointmentDescription, appointmentLocation, appointmentContact, appointmentType, appointmentUrl, startTime, endTime);       
+               
+        
+    }
+    
+    public int getCustomerIndex(int customerId) {
+        for(int i=0; i<allCustomers.size(); i++){
+            Customer customer = allCustomers.get(i);
+            if(customer.getCustomerId() == customerId) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    public void updateAppointment(){
+        
+        Appointment selectedAppointment = appointments_table.getSelectionModel().getSelectedItem();
+        
+        int customerId = selectedAppointment.getCustomerId();
+        String customerName = CustomerDao.getCustomerName(customerId);
+        
+        int selectedAppointmentId = selectedAppointment.getAppointmentId();
+ //----------------------- allCustomers is the index 
+        int customerIndex = getCustomerIndex(customerId);
+  
+//        customers_list.getSelectionModel().select(customerIndex); // -----
+        customers_list.getSelectionModel().select(customerIndex); // -----
+// ------------------       
+        
+        //appointmentCustomerName.setText(customerName);        
+        
+        int selectedCustomerId = allCustomers.get(selectedindex).getCustomerId();
+        int userId = currentUserId;
+        String appointmentTitle = this.appointmentTitle.getText();
+        String appointmentDescription = this.appointmentDescription.getText();
+        String appointmentLocation = this.appointmentLocation.getText();
+        String appointmentContact = this.appointmentContact.getText();
+        String appointmentType = this.appointmentType.getText();
+        String appointmentUrl = this.appointmentURL.getText();
+        
+        LocalDate sDate = startDate.getValue();
+        int sHour = startHour.getValue();
+        int sMinute = startMinute.getValue();
+        String sAMPM = startAMPM.getValue();
+        LocalDate eDate = endDate.getValue();
+        int eHour = endHour.getValue();
+        int eMinute = endMinute.getValue();
+        String eAMPM = endAMPM.getValue();
+        
+        String startTime = Time.dateToUTCString(sDate, sHour, sMinute, sAMPM);
+        String endTime = Time.dateToUTCString(eDate, eHour, eMinute, eAMPM);        
+        
+        
+        
+        AppointmentDao.updateAppointment(selectedAppointmentId, selectedCustomerId, userId, appointmentTitle, appointmentDescription, appointmentLocation, appointmentContact, appointmentType, appointmentUrl, startTime, endTime);
+    }
+
+    @FXML
+    private void appointmentSave(javafx.scene.input.MouseEvent event) {
+        
+        if(check_valid_appointment_fields()){
+            set_optional_empty_appointment_fields();
+            if(appointmentlastClicked == 1){
+                saveAppointment();
+                // do something like this customers_list.getSelectionModel().select(allCustomers.size()-1);
+            }
+            else if(appointmentlastClicked == 2){
+                updateAppointment();
+            }
+                        
+            appointments_table.getItems().clear();
+            allAppointments.clear();
+            set_appointment_table();
+            
+            
+            modifyAppointmentView.setVisible(false);                
+            appointments_table.setVisible(true);
+            error_appointment_label.setVisible(false);
+        }        
+    }
+
+    @FXML
+    private void Toggle_Week_Clicked(javafx.scene.input.MouseEvent event) {
+        appointments_table.getItems().clear();
+        allAppointments.clear();
+        set_appointment_table();         
+    }
+    
+    @FXML
+    private void Toggle_Month_Clicked(javafx.scene.input.MouseEvent event) {
+        appointments_table.getItems().clear();
+        allAppointments.clear();
+        set_appointment_table();         
+    }
+
+    @FXML
+    private void Toggle_All_Clicked(javafx.scene.input.MouseEvent event) {
+        appointments_table.getItems().clear();
+        allAppointments.clear();
+        set_appointment_table();         
+    }
 
     
 }
+
+
+
+// if meeting end is before the start produce error.

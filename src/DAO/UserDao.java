@@ -137,6 +137,36 @@ public class UserDao {
         
         return null;    
     }
+        
+        
+    public static String getUserName(int userId){
+        try{    
+            String sql = "SELECT userName FROM user\n" +
+                         "WHERE userId = ?;";
+        
+            DBQuery.SetPreparedStatement(connection, sql);           
+            PreparedStatement ps = DBQuery.getPreparedStatement();
+            
+            ps.setInt(1, userId);
+            
+            ResultSet result = ps.executeQuery();
+            if(result.next() == false) {
+                System.out.println("UserName result is empty");                
+            }
+            else {                
+
+                String userName = result.getString("userName");            
+                                    
+            return userName;
+            }
+            
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+        
+        return null;                
+    }
     
     
     

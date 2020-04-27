@@ -143,7 +143,7 @@ public class CityDao {
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
 
-            String currentDate = Time.currentDate();
+            String currentDate = Time.currentUTCDate();
 
             ps.setString(1, cityName); 
             ps.setInt(2, countryId);

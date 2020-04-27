@@ -3,15 +3,16 @@
  */
 package schedulingapplication;
 
+import DAO.AppointmentDao;
 import DAO.UserDao;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 import static java.util.Locale.getDefault;
 import java.util.ResourceBundle;
@@ -49,14 +50,29 @@ public class SchedulingApplication extends Application {
      */
     public static void main(String[] args) throws SQLException {
        
+//        LocalDateTime startDT = LocalDateTime.of(2020, 4, 26, 13, 00);
+//        LocalDateTime endDT = LocalDateTime.of(2020, 4, 26, 13, 30);
+//        LocalDateTime myDT = LocalDateTime.of(2020, 4, 26, 13, 10);
+//        
+//        // check time overlap
+//        if(myDT.isAfter(startDT) && myDT.isBefore(endDT)) {
+//            System.out.println("My DT is in between times   " + myDT);
+//        }
+//        
+//        
+//        LocalTime startTime = LocalTime.of(13, 20); //Meeting start time 
+//        LocalTime currentTime = LocalTime.now(); // current time of my computer
+//        long timeDifference = ChronoUnit.MINUTES.between(currentTime, startTime);
+//        System.out.println(timeDifference );
+//        if(timeDifference > 0 && timeDifference <= 15) {
+//            System.out.println("You have an event in "+ timeDifference + " minutes");            
+//        }
+//        
         
         
-        
-        
-
         //starts the Database connection
         Connection connection = DBConnection.startConnection();
-       
+
         
         // Anything before launch starts when project opens
         launch(args);
