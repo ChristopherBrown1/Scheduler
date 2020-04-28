@@ -83,10 +83,14 @@ public class Time {
       
     public static String dateToUTCString(LocalDate date, int hour, int minute, String ampm) {
         
-        if(ampm == "PM") {
+        if(ampm == "PM" && hour != 12) {
             hour = hour + 12;
         }
+        else if(ampm =="AM" && hour == 12) {
+            hour = hour - 12;
+        }
         
+                                       
         LocalDateTime localdt = LocalDateTime.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), hour, minute);
         ZonedDateTime locZdt = ZonedDateTime.of(localdt, ZoneId.systemDefault());
         ZonedDateTime utcZdt = locZdt.withZoneSameInstant(ZoneOffset.UTC);
