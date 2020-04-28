@@ -20,6 +20,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.temporal.Temporal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
@@ -44,6 +47,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import model.Address;
 import model.Appointment;
 import model.City;
@@ -228,9 +232,12 @@ public class MainScreenController implements Initializable {
         set_username_label("Logged in as: " + userName);
         //listen for selection model
         
-        customers_list.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> {
-            set_selection_fields();
-            //System.out.println(newvalue);
+        customers_list.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> { 
+// testing thissssssss            
+    //        if(newvalue != null) {
+                set_selection_fields();
+    //        }
+// testing the if statement....... 
                 });
         
         add_customer.setOnAction(e->lastClicked=1);
@@ -264,6 +271,17 @@ public class MainScreenController implements Initializable {
             ObservableList<Appointment> list = AppointmentDao.getMonthAppointmentsJoined(currentUserId);        
             allAppointments = list;            
         }
+
+        
+        
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("h:mma  ||  MMM, dd YYYY");
+//        start.setCellValueFactory(new PropertyValueFactory<>("start"));
+//        end.setCellValueFactory(new PropertyValueFactory<>("end"));
+//        start.setCellFactory(getDateCell(format));
+//        end.setCellFactory(getDateCell(format));
+  
+  
+         
         
         start.setCellValueFactory(new PropertyValueFactory<>("start"));
         end.setCellValueFactory(new PropertyValueFactory<>("end"));        
@@ -285,6 +303,26 @@ public class MainScreenController implements Initializable {
         
         
     }
+    
+    
+    
+    public static <ROW,T extends Temporal> Callback<TableColumn<ROW, T>, TableCell<ROW, T>> getDateCell (DateTimeFormatter format) {
+      return column -> {
+        return new TableCell<ROW, T> () {
+          @Override
+          protected void updateItem (T item, boolean empty) {
+            super.updateItem (item, empty);
+            if (item == null || empty) {
+              setText (null);
+            }
+            else {
+              setText (format.format (item));
+            }
+          }
+        };
+      };
+    }   
+    
 
     public void set_selection_fields() {
         clear_customer_fields();
@@ -594,7 +632,8 @@ public class MainScreenController implements Initializable {
     
     private void updateCustomer() {
 
-        int selectedCustomerId = allCustomers.get(selectedindex).getCustomerId();
+
+        int selectedCustomerId = allCustomers.get(selectedindex).getCustomerId();        
         String customerName = name.getText();
         String phone = this.phone.getText();
         String street = this.street.getText();
@@ -619,8 +658,7 @@ public class MainScreenController implements Initializable {
     
 // TODO: If statement to see if Add User or Update User was last selected. ===========================
 // send username as a parameter
-        
-        
+                
         if (check_valid_customer_fields()) {
             
             if(lastClicked == 1) {
@@ -631,13 +669,14 @@ public class MainScreenController implements Initializable {
             else if (lastClicked == 2) {
                 updateCustomer();
             }
-            
+                                
             allCustomers.clear();
             
 //        Will this help?  Platform.runLater(() -> { });  https://noblecodemonkeys.com/switching-to-the-gui-thread-in-javafx/
             
 // ------------------------------------------------------------------
             allCustomerNames.clear(); // The error is here........
+            
 //--------------------------------------------------------------------- 
 
             set_customers_list();
