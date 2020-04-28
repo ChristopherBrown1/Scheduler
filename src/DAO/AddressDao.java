@@ -111,16 +111,18 @@ public class AddressDao {
     
     
 // ----------------------------------------------------- get and set
-    public static int getAddressId(String addressStreet, int cityId, String postalCode)  {
+    public static int getAddressId(String addressStreet, String state, int cityId, String postalCode, String phone)  {
         try{
             String sql = "SELECT addressId FROM address\n" +
-                        "WHERE address = ? AND cityId = ? AND postalCode = ?;";
+                        "WHERE address = ? AND address2 = ? AND cityId = ? AND postalCode = ? AND phone = ?;";
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
             
             ps.setString(1, addressStreet);
-            ps.setInt(2, cityId);
-            ps.setString(3, postalCode);
+            ps.setString(2, state);
+            ps.setInt(3, cityId);
+            ps.setString(4, postalCode);
+            ps.setString(5, phone);
             
             ps.execute();                
             

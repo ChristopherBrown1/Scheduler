@@ -92,7 +92,7 @@ public class CustomerDao {
 
             String currentDate = Time.currentUTCDate();
             
-            int addressId = fullAddressToAddressId(userName, phone, street, city, state,country, zip);
+            int addressId = fullAddressToAddressId(userName, phone, street, city, state, country, zip);
             
             ps.setString(1, customerName);
             ps.setInt(2, addressId);
@@ -137,10 +137,10 @@ public class CustomerDao {
             
         }
             
-        addressId = AddressDao.getAddressId(street, cityId, zip);
+        addressId = AddressDao.getAddressId(street, state, cityId, zip, phone);
         if(addressId <=0){
             AddressDao.setAddressId(userName, street, state, cityId, zip, phone);
-            addressId = AddressDao.getAddressId(street, cityId, zip);
+            addressId = AddressDao.getAddressId(street, state, cityId, zip, phone);
                         System.out.println("Address Id after if : " + addressId);            
         }
         

@@ -119,7 +119,8 @@ public class CountryDao {
             }
             else {                
                 // here is the problem
-                int countryId = result.getInt("countryId");            
+                int countryId = result.getInt("countryId");
+                System.out.println("countryId = " + countryId);
                                     
             return countryId;
             }

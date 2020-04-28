@@ -234,9 +234,9 @@ public class MainScreenController implements Initializable {
         
         customers_list.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> { 
 // testing thissssssss            
-    //        if(newvalue != null) {
+            if(newvalue != null) {
                 set_selection_fields();
-    //        }
+            }
 // testing the if statement....... 
                 });
         
@@ -275,16 +275,16 @@ public class MainScreenController implements Initializable {
         
         
         DateTimeFormatter format = DateTimeFormatter.ofPattern("h:mma  ||  MMM, dd YYYY");
-//        start.setCellValueFactory(new PropertyValueFactory<>("start"));
-//        end.setCellValueFactory(new PropertyValueFactory<>("end"));
-//        start.setCellFactory(getDateCell(format));
-//        end.setCellFactory(getDateCell(format));
+        start.setCellValueFactory(new PropertyValueFactory<>("start"));
+        end.setCellValueFactory(new PropertyValueFactory<>("end"));
+        start.setCellFactory(getDateCell(format));
+        end.setCellFactory(getDateCell(format));
   
   
          
         
-        start.setCellValueFactory(new PropertyValueFactory<>("start"));
-        end.setCellValueFactory(new PropertyValueFactory<>("end"));        
+//        start.setCellValueFactory(new PropertyValueFactory<>("start"));
+//        end.setCellValueFactory(new PropertyValueFactory<>("end"));        
         title.setCellValueFactory(new PropertyValueFactory<>("title"));
         customerNameTable.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
@@ -614,12 +614,12 @@ public class MainScreenController implements Initializable {
     private void saveCustomer() {
 
         String customerName = name.getText();
-        String phone = this.phone.getText();
-        String street = this.street.getText();
-        String city =this.city.getText();
-        String state = this.state.getText();
-        String country = this.country.getText();
-        String zip = this.zip.getText();
+        String customerPhone = this.phone.getText();
+        String cutomerStreet = this.street.getText();
+        String cutomerCity =this.city.getText();
+        String customerState = this.state.getText();
+        String customerCountry = this.country.getText();
+        String customerZip = this.zip.getText();
 
         int active = 0;
         String activeStr = this.active.getText().toLowerCase();
@@ -627,7 +627,7 @@ public class MainScreenController implements Initializable {
             active = 1;
         }
 
-        CustomerDao.addCustomer(userName, customerName, phone, street, city, state, country, zip, active);                
+        CustomerDao.addCustomer(userName, customerName, customerPhone, cutomerStreet, cutomerCity, customerState, customerCountry, customerZip, active);                
     }
     
     private void updateCustomer() {
@@ -655,32 +655,30 @@ public class MainScreenController implements Initializable {
     
     @FXML
     private void save_user_data(javafx.scene.input.MouseEvent event) {
-    
-// TODO: If statement to see if Add User or Update User was last selected. ===========================
-// send username as a parameter
                 
         if (check_valid_customer_fields()) {
             
             if(lastClicked == 1) {
                 saveCustomer();
-                customers_list.getSelectionModel().select(allCustomers.size()-1);
+            allCustomers.clear();            
+            allCustomerNames.clear(); 
+            set_customers_list();                
+            customers_list.getSelectionModel().select(allCustomers.size()-1);
+            customers_list.getFocusModel().focus(allCustomers.size()-1);
+
                                 
             }
             else if (lastClicked == 2) {
                 updateCustomer();
+            allCustomers.clear();            
+            allCustomerNames.clear(); 
+            set_customers_list();
+            customers_list.getSelectionModel().select(selectedindex);
+            customers_list.getFocusModel().focus(selectedindex);                
             }
                                 
-            allCustomers.clear();
-            
-//        Will this help?  Platform.runLater(() -> { });  https://noblecodemonkeys.com/switching-to-the-gui-thread-in-javafx/
-            
-// ------------------------------------------------------------------
-            allCustomerNames.clear(); // The error is here........
-            
-//--------------------------------------------------------------------- 
 
-            set_customers_list();
-            // Must add customer to the list and reset the page to view it
+
             
             disable_customer_fields();
             save.setVisible(false);
