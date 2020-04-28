@@ -9,7 +9,12 @@ import static DAO.UserDao.isActive;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -57,7 +62,16 @@ public class AppointmentDao {
                 String start = result.getString("start");
                 Calendar startDateCalendar=stringToCalendar(start);
                 String end = result.getString("end");
-                Calendar endDateCalendar=stringToCalendar(end);                                
+                Calendar endDateCalendar=stringToCalendar(end);
+                
+                
+
+                LocalDateTime startLDT = Time.stringToLocalDateTime(start);
+                LocalDateTime endLDT = Time.stringToLocalDateTime(end);
+                
+                
+                                
+                
                 
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar=stringToCalendar(createDate);                
@@ -66,7 +80,7 @@ public class AppointmentDao {
                 Calendar lastUpdateCalendar=stringToCalendar(lastUpdate);                                
                 String lastUpdateBy = result.getString("lastUpdateBy");              
                 
-                userResult = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, startDateCalendar, endDateCalendar, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
+                userResult = new Appointment(appointmentId, customerId, userId, title, description, location, contact, type, url, startLDT, endLDT, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 appointments.add(userResult); //add everything to the table
                 
             }                    
@@ -118,18 +132,16 @@ public class AppointmentDao {
                 String url = result.getString("url");                
                 String start = result.getString("start");
                 Calendar startDateCalendar=stringToCalendar(start);
-
- // ------------- change the timezone to get correct values               
-        String tz_name = startDateCalendar.getTimeZone().getDisplayName();  
-        System.out.println("The Current Time"+ " Zone: " + tz_name);
-        
-        TimeZone timezone = TimeZone.getTimeZone("GMT");        
-        startDateCalendar.setTimeZone(timezone);
-        System.out.println("The Current Time"+ " Zone: " + startDateCalendar.getTimeZone().getDisplayName());
-// -------------------------------------------
-                
                 String end = result.getString("end");
-                Calendar endDateCalendar=stringToCalendar(end);                                
+                Calendar endDateCalendar=stringToCalendar(end);
+
+
+                LocalDateTime startLDT = Time.stringToLocalDateTime(start);
+                LocalDateTime endLDT = Time.stringToLocalDateTime(end);
+                
+                
+                
+                                
                 
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar=stringToCalendar(createDate);                
@@ -138,7 +150,7 @@ public class AppointmentDao {
                 Calendar lastUpdateCalendar=stringToCalendar(lastUpdate);                                
                 String lastUpdateBy = result.getString("lastUpdateBy");              
                 
-                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startDateCalendar, endDateCalendar, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
+                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startLDT, endLDT, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 appointments.add(userResult); //add everything to the table
                 
             }                    
@@ -197,7 +209,16 @@ public class AppointmentDao {
                 String start = result.getString("start");
                 Calendar startDateCalendar=stringToCalendar(start);
                 String end = result.getString("end");
-                Calendar endDateCalendar=stringToCalendar(end);                                
+                Calendar endDateCalendar=stringToCalendar(end);
+                
+                
+                
+
+                LocalDateTime startLDT = Time.stringToLocalDateTime(start);
+                LocalDateTime endLDT = Time.stringToLocalDateTime(end);
+                
+                
+                                
                 
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar=stringToCalendar(createDate);                
@@ -206,7 +227,7 @@ public class AppointmentDao {
                 Calendar lastUpdateCalendar=stringToCalendar(lastUpdate);                                
                 String lastUpdateBy = result.getString("lastUpdateBy");              
                 
-                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startDateCalendar, endDateCalendar, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
+                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startLDT, endLDT, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 appointments.add(userResult); //add everything to the table
                 
             }                    
@@ -243,8 +264,6 @@ public class AppointmentDao {
             //get a date a week out from today
             LocalDateTime nextMonth = Time.getNextMonth();            
             DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            System.out.println(nextMonth.format(customFormatter));
-// Should this be converted back to UTC first?            
             
             ps.setString(2, nextMonth.format(customFormatter));
             ps.execute();
@@ -268,8 +287,15 @@ public class AppointmentDao {
                 String start = result.getString("start");
                 Calendar startDateCalendar=stringToCalendar(start);
                 String end = result.getString("end");
-                Calendar endDateCalendar=stringToCalendar(end);                                
+                Calendar endDateCalendar=stringToCalendar(end);
                 
+                
+
+                LocalDateTime startLDT = Time.stringToLocalDateTime(start);
+                LocalDateTime endLDT = Time.stringToLocalDateTime(end);
+                
+                
+                                
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar=stringToCalendar(createDate);                
                 String createdBy = result.getString("createdBy");
@@ -277,7 +303,7 @@ public class AppointmentDao {
                 Calendar lastUpdateCalendar=stringToCalendar(lastUpdate);                                
                 String lastUpdateBy = result.getString("lastUpdateBy");              
                 
-                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startDateCalendar, endDateCalendar, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
+                userResult = new Appointment(appointmentId, customerId, customerName, userId, userName, title, description, location, contact, type, url, startLDT, endLDT, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 appointments.add(userResult); //add everything to the table
                 
             }                    
@@ -434,7 +460,7 @@ public class AppointmentDao {
                         
             ResultSet result = ps.executeQuery();
             
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S"); 
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
             int num = 0;
             while(result.next()) {
                 String startString = result.getString("start");

@@ -6,6 +6,7 @@
 package utilities;
 
 import java.sql.Array;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,6 +43,27 @@ public class Time {
       public static String currentDateTime(){
           Date dateTime = new Date();
           return dateTime.toString();          
+      }
+      
+      public static LocalDateTime stringToLocalDateTime(String time){
+         DateFormat utcFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+         utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+         Date utcTime = null;
+           try {
+               utcTime = utcFormat.parse(time);
+           } catch (ParseException ex) {
+               Logger.getLogger(Time.class.getName()).log(Level.SEVERE, null, ex);
+           }
+         DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         localFormat.setTimeZone(TimeZone.getDefault());
+         System.out.println(" Local: " + localFormat.format(utcTime));
+         String lString = localFormat.format(utcTime);
+         LocalDateTime l = LocalDateTime.parse(lString, f);
+         System.out.println("LDT = " + l);
+         
+         return l;
+         
       }
            
       

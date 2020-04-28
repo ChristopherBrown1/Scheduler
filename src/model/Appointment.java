@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 /**
@@ -24,14 +25,14 @@ public class Appointment {
     private String contact;
     private String type;
     private String url;
-    private Calendar start;
-    private Calendar end;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private Calendar createDate;
     private String createdBy;
     private Calendar lastUpdate;
     private String lastUpdateBy;
 
-    public Appointment(int appointmentId, int customerId, int userId, String title, String description, String location, String contact, String type, String url, Calendar start, Calendar end, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
+    public Appointment(int appointmentId, int customerId, int userId, String title, String description, String location, String contact, String type, String url, LocalDateTime start, LocalDateTime end, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.userId = userId;
@@ -50,7 +51,7 @@ public class Appointment {
     }
 
     // Joined to include userName and customerName for table
-    public Appointment(int appointmentId, int customerId, String customerName, int userId, String userName, String title, String description, String location, String contact, String type, String url, Calendar start, Calendar end, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
+    public Appointment(int appointmentId, int customerId, String customerName, int userId, String userName, String title, String description, String location, String contact, String type, String url, LocalDateTime start, LocalDateTime end, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
         this.appointmentId = appointmentId;
         this.customerId = customerId;
         this.customerName = customerName;
@@ -142,19 +143,19 @@ public class Appointment {
         this.url = url;
     }
 
-    public Calendar getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Calendar start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Calendar getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(Calendar end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 

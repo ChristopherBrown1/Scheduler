@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -110,11 +111,11 @@ public class MainScreenController implements Initializable {
     @FXML
     private TextField country;
     @FXML
-    private TableColumn<Appointment, Calendar> start;
+    private TableColumn<Appointment, LocalDateTime> start;
     @FXML
     private TableColumn<Appointment, String> title;
     @FXML
-    private TableColumn<Appointment, Calendar> end;
+    private TableColumn<Appointment, LocalDateTime> end;
     @FXML
     private TableColumn<Appointment, String> customerNameTable;
     @FXML
@@ -199,13 +200,14 @@ public class MainScreenController implements Initializable {
         
         // Is ArrayIndexOutOfBoundsException: -1 because the listener?
         
+// Need to fix this time -------------------------------------------------------------        
         loginTime = Time.currentDateTime();
         long time = AppointmentDao.getNextAppointmentStartsIn(currentUserId);
         System.out.println(time + " minutes until next meeting...");
         if (time <= 15){
             timeUntilNextAppointment.setText(time + " minutes until next Appointment!");
         }
-                
+// ------------------------------------------------------------------------------------------                
         startDate.setValue(LocalDate.now());
         endDate.setValue(LocalDate.now());
         
@@ -276,29 +278,7 @@ public class MainScreenController implements Initializable {
         
         DateFormat dateFormat = DateFormat.getDateInstance();
         SimpleDateFormat dateForm = new SimpleDateFormat("hh:mm a  |  MMM, dd YYYY");
-        start.setCellFactory(col -> new TableCell<Appointment, Calendar>() {
-            @Override
-            protected void updateItem(Calendar date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty) {
-                    setText(null);
-                } else {                    
-                    setText(dateForm.format(Time.calendarToString(date)));
-                }
-            }
-        });
         
-        end.setCellFactory(col -> new TableCell<Appointment, Calendar>() {
-            @Override
-            protected void updateItem(Calendar date, boolean empty) {
-                super.updateItem(date, empty);
-                if (empty) {
-                    setText(null);
-                } else {
-                    setText(dateForm.format(Time.calendarToString(date)));
-                }
-            }
-        });
         
         
         appointments_table.setItems(allAppointments);
@@ -452,20 +432,53 @@ public class MainScreenController implements Initializable {
         appointmentURL.setText(selectedAppointment.getUrl());
         
         //dateStringtoLocalDate
-        Calendar startCal = selectedAppointment.getStart();
-        Calendar endCal = selectedAppointment.getEnd();
-        int[] sDate = Time.calendarToArray(startCal);
-        int[] eDate = Time.calendarToArray(endCal);
+        LocalDateTime startCal = selectedAppointment.getStart();
+        LocalDateTime endCal = selectedAppointment.getEnd();
+
         
-        startDate.setValue(Time.arrayToLD(sDate)); 
-        startHour.setValue(Time.arrayToHour(sDate));
-        startMinute.setValue(Time.arrayToMin(sDate));
-        startAMPM.setValue(Time.arrayToAMPM(sDate));
+
+        int sHour = startCal.getHour();
+        String sampm;
+        if(sHour < 12){
+            sampm = "AM";
+        }
+        else {
+            sampm = "PM";
+        }
         
-        endDate.setValue(Time.arrayToLD(eDate)); 
-        endHour.setValue(Time.arrayToHour(eDate));
-        endMinute.setValue(Time.arrayToMin(eDate));
-        endAMPM.setValue(Time.arrayToAMPM(eDate));
+        if(sHour == 0){
+            sHour = 12;
+        }
+        else if (sHour > 12){
+            sHour = sHour - 12;
+        }
+        
+        int eHour = endCal.getHour();       
+        String eampm;
+        if(eHour < 12){
+            eampm = "AM";
+        }
+        else {
+            eampm = "PM";
+        }
+        
+        if(eHour == 0){
+            eHour = 12;
+        }
+        else if (eHour > 12){
+            eHour = eHour - 12;
+        }        
+        
+        
+        startDate.setValue(startCal.toLocalDate()); 
+        startHour.setValue(sHour);
+        startMinute.setValue(startCal.getMinute());
+        startAMPM.setValue(sampm);
+        
+        endDate.setValue(endCal.toLocalDate()); 
+        endHour.setValue(eHour);
+        endMinute.setValue(endCal.getMinute());
+        endAMPM.setValue(eampm);
         
         appointments_table.setVisible(false);
         modifyAppointmentView.setVisible(true);
