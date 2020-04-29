@@ -11,6 +11,7 @@ import DAO.CityDao;
 import DAO.CountryDao;
 import DAO.CustomerDao;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -39,6 +40,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -54,6 +58,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import model.Address;
@@ -201,6 +206,8 @@ public class MainScreenController implements Initializable {
     private RadioButton All_View;
     @FXML
     private ProgressBar progress;
+    @FXML
+    private Label reports;
     
     public MainScreenController(int uId, String userName) {
         currentUserId = uId;
@@ -935,6 +942,24 @@ public class MainScreenController implements Initializable {
         appointments_table.getItems().clear();
         allAppointments.clear();
         set_appointment_table();         
+    }
+
+    @FXML
+    private void report(javafx.scene.input.MouseEvent event) throws IOException {
+        
+        Stage stage;
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view_controller/Test.fxml")); // loads our main screen.
+        view_controller.TestController controller = new view_controller.TestController(currentUserId, userName);
+        loader.setController(controller);
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();            
+        stage.setScene(scene);
+
+//            stage.setResizable(false);
+        stage.show();         
+        
     }
 
     

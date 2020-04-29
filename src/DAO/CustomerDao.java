@@ -9,6 +9,7 @@ import static DAO.UserDao.isActive;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javafx.collections.FXCollections;
@@ -242,5 +243,38 @@ public class CustomerDao {
         
         return null;
     }
+    
+    
+    public static String getCustomerNamesAndPhone(){
+
+        ArrayList<String> allNames = new ArrayList<>();
+        ArrayList<String> allPhones = new ArrayList<>();
+        try {
+            String sql = "SELECT c.customerName, a.phone\n" +
+                         "FROM customer c\n" +
+                         "INNER JOIN address a ON c.addressId = a.addressId;";
+
+            DBQuery.SetPreparedStatement(connection, sql);           
+            PreparedStatement ps = DBQuery.getPreparedStatement();
+            ps.execute();            
+            ResultSet result = ps.getResultSet();            
+            while(result.next()){                                         
+                String name = result.getString("customerName");            
+                String phone = result.getString("phone");
+                allNames.add(name);
+                allPhones.add(phone);
+            }                    
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+        
+        String allNamesAndPhones = "";
+        for(int i=0; i<allNames.size(); i++) {
+            allNamesAndPhones = allNamesAndPhones + allNames.get(i) +": " + allPhones.get(i) + "\n";
+        }
+        
+        return allNamesAndPhones;
+    }    
     
 }

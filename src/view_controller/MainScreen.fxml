@@ -150,7 +150,7 @@
                               <Insets left="125.0" right="150.0" />
                            </padding>
                         </Label>
-                        <Button mnemonicParsing="false" text="Reports" />
+                        <Button mnemonicParsing="false" onMouseClicked="#report" text="Reports" />
                     </items>
                   </ToolBar>
                   <AnchorPane fx:id="modifyAppointmentView" prefHeight="907.0" prefWidth="836.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

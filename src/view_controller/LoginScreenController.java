@@ -205,12 +205,6 @@ public class LoginScreenController implements Initializable {
         if (isFilledUsernamePassword() && isCorrectLoginInfo()) {
             
             Stage stage;
-//            Parent scene;
-
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setLocation(getClass().getResource("/view_controller/MainScreen.fxml"));
-//            scene = loader.load();
-//            view_controller.MainScreenController controller = loader.getController();
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view_controller/MainScreen.fxml")); // loads our main screen.
             view_controller.MainScreenController controller = new view_controller.MainScreenController(loggedInUser.getUserId(), username_text.getText());
@@ -222,25 +216,10 @@ public class LoginScreenController implements Initializable {
             stage.setMaximized(true);
 //            stage.setResizable(false);
             stage.show();           
-            
-// ---------------------------------------------------------------------            
-            //I need to pass inventory as a paramater to the constructor
- // --------------------------------------------------------------------------           
-            
-            
-//            controller.set_username_label("Logged in as: " + username_text.getText());
-//            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-//            stage.setScene(new Scene(scene));
-//            stage.setMaximized(true);
-////            stage.setResizable(false);
-//            stage.show();            
+      
         }                              
         
     }
-    
-/* Create a log-in form that can determine the user’s location and translate log-in and error control messages
-(e.g., “The username and password did not match.”) into two languages.
-*/
-    
+
 
 }
