@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -178,7 +179,7 @@ public class AppointmentDao {
                         "FROM appointment a\n" +
                         "INNER JOIN customer c ON a.customerId = c.customerId\n" +
                         "INNER JOIN user u ON a.userId = u.userId\n" +
-                        "WHERE u.userId = ? AND start <= ?;";
+                        "WHERE u.userId = ? AND start <= ? AND start >= ?;";
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
             
@@ -187,7 +188,9 @@ public class AppointmentDao {
             LocalDateTime nextWeek = Time.getNextWeek();            
             DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             
+            //selects appointments that start from one hour ago to meetings starting one week from now.
             ps.setString(2, nextWeek.format(customFormatter));
+            ps.setString(3, LocalDateTime.now().minusHours(1).format(customFormatter));
             ps.execute();
             
             ResultSet result = ps.getResultSet();            
@@ -256,7 +259,7 @@ public class AppointmentDao {
                         "FROM appointment a\n" +
                         "INNER JOIN customer c ON a.customerId = c.customerId\n" +
                         "INNER JOIN user u ON a.userId = u.userId\n" +
-                        "WHERE u.userId = ? AND start <= ?;";
+                        "WHERE u.userId = ? AND start <= ? AND start >= ?;";
             DBQuery.SetPreparedStatement(connection, sql);           
             PreparedStatement ps = DBQuery.getPreparedStatement();
             
@@ -264,8 +267,10 @@ public class AppointmentDao {
             //get a date a week out from today
             LocalDateTime nextMonth = Time.getNextMonth();            
             DateTimeFormatter customFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            
+
+            //selects appointments that start from one hour ago to meetings starting one month from now.            
             ps.setString(2, nextMonth.format(customFormatter));
+            ps.setString(3, LocalDateTime.now().minusHours(1).format(customFormatter));            
             ps.execute();
             
             ResultSet result = ps.getResultSet();            
@@ -460,11 +465,10 @@ public class AppointmentDao {
                         
             ResultSet result = ps.executeQuery();
             
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); 
             int num = 0;
             while(result.next()) {
                 String startString = result.getString("start");
-                LocalDateTime start = LocalDateTime.parse(startString, formatter);                                
+                LocalDateTime start = Time.stringToLocalDateTime(startString);
                 LocalDateTime currentTime = LocalDateTime.now();
                 long timeDifference = ChronoUnit.MINUTES.between(currentTime, start);                                
                 minutesUntilMeetings.add(timeDifference);
@@ -482,6 +486,47 @@ public class AppointmentDao {
                } 
             }
             return smallest;
+    }
+        
+        
+        public static int getNextAppointmentWith(int userId) {
+        
+        ArrayList<Long> minutesUntilMeetings = new ArrayList<>();
+        ArrayList<Integer> customerIds = new ArrayList<>();
+            
+        try{
+            String sql = "SELECT start, customerId FROM appointment WHERE userId = ?;";
+            DBQuery.SetPreparedStatement(connection, sql);           
+            PreparedStatement ps = DBQuery.getPreparedStatement();
+            
+            ps.setInt(1, userId);
+                        
+            ResultSet result = ps.executeQuery();
+            
+            int num = 0;
+            while(result.next()) {
+                String startString = result.getString("start");
+                int Id = result.getInt("customerId");
+                LocalDateTime start = Time.stringToLocalDateTime(startString);
+                LocalDateTime currentTime = LocalDateTime.now();
+                long timeDifference = ChronoUnit.MINUTES.between(currentTime, start);                                
+                minutesUntilMeetings.add(timeDifference);
+                customerIds.add(Id);
+                num = num + 1;                
+            }
+        }       
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        } 
+        
+            long smallest = Long.MAX_VALUE;
+            int customerId = -1;
+            for(int i=0; i<minutesUntilMeetings.size(); i++) {
+               if(minutesUntilMeetings.get(i) > 0 && minutesUntilMeetings.get(i) < smallest){
+                   customerId = customerIds.get(i);
+               } 
+            }
+            return customerId;
     }
     
 }

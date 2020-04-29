@@ -58,7 +58,7 @@
                   <VBox prefHeight="37.0" prefWidth="540.0">
                      <children>
                         <Label fx:id="timeUntilNextAppointment" text="Time until Next Appointment" />
-                        <ProgressBar prefHeight="20.0" prefWidth="245.0" progress="0.0" />
+                        <ProgressBar fx:id="progress" prefHeight="20.0" prefWidth="245.0" progress="0.0" />
                      </children>
                      <padding>
                         <Insets left="200.0" />
@@ -76,7 +76,7 @@
                      <children>
                         <DialogPane minHeight="-Infinity" prefHeight="27.0" prefWidth="181.0" style="-fx-background-color: #E5E5E5; -fx-border-color: #E0E0E0;">
                            <header>
-                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="179.0" text="CustomerDetails" />
+                              <Label fx:id="reports" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="179.0" text="Customer" />
                            </header>
                         </DialogPane>
                         <ListView fx:id="customers_list" prefHeight="932.0" prefWidth="221.0" style="-fx-background-color: #63E4EE; -fx-control-inner-background: #63E4EE; -fx-control-inner-background-alt: derive(-fx-control-inner-background, 35%);" />
@@ -147,9 +147,10 @@
                         <RadioButton fx:id="All_View" mnemonicParsing="false" onMouseClicked="#Toggle_All_Clicked" selected="true" text="All" toggleGroup="$ViewByWeekMonth" />
                         <Label fx:id="username_label" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" text="Signed in as: Username here...">
                            <padding>
-                              <Insets left="125.0" />
+                              <Insets left="125.0" right="150.0" />
                            </padding>
                         </Label>
+                        <Button mnemonicParsing="false" text="Reports" />
                     </items>
                   </ToolBar>
                   <AnchorPane fx:id="modifyAppointmentView" prefHeight="907.0" prefWidth="836.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

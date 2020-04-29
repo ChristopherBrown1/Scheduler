@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -28,9 +29,14 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,6 +44,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -48,6 +55,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import model.Address;
 import model.Appointment;
 import model.City;
@@ -134,6 +142,11 @@ public class MainScreenController implements Initializable {
     private TableColumn<Appointment, String> url;
     private String userName;
     private String loginTime;
+    private Timeline timeline;
+    private long timeMinutes = 0;
+    private int nextAptWith = 0;
+    private String nextAptCustomer;
+    private boolean progressBool = true;
     @FXML
     private TextField active;
     @FXML
@@ -186,10 +199,13 @@ public class MainScreenController implements Initializable {
     private Label timeUntilNextAppointment;
     @FXML
     private RadioButton All_View;
+    @FXML
+    private ProgressBar progress;
     
     public MainScreenController(int uId, String userName) {
         currentUserId = uId;
         this.userName = userName;
+
     }
     
     
@@ -201,16 +217,9 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+       
+        loginTime = LocalTime.now().toString();
         
-        // Is ArrayIndexOutOfBoundsException: -1 because the listener?
-        
-// Need to fix this time -------------------------------------------------------------        
-        loginTime = Time.currentDateTime();
-        long time = AppointmentDao.getNextAppointmentStartsIn(currentUserId);
-        System.out.println(time + " minutes until next meeting...");
-        if (time <= 15){
-            timeUntilNextAppointment.setText(time + " minutes until next Appointment!");
-        }
 // ------------------------------------------------------------------------------------------                
         startDate.setValue(LocalDate.now());
         endDate.setValue(LocalDate.now());
@@ -233,18 +242,57 @@ public class MainScreenController implements Initializable {
         //listen for selection model
         
         customers_list.getSelectionModel().selectedItemProperty().addListener((v, oldvalue, newvalue) -> { 
-// testing thissssssss            
             if(newvalue != null) {
                 set_selection_fields();
             }
-// testing the if statement....... 
                 });
         
         add_customer.setOnAction(e->lastClicked=1);
         update_customer.setOnAction(e->lastClicked=2);
         
         add_appointment.setOnAction(e->appointmentlastClicked=1);
-        update_appointment.setOnAction(e->appointmentlastClicked=2);                
+        update_appointment.setOnAction(e->appointmentlastClicked=2); 
+        
+        countdownToMeeting();
+       
+    }
+   
+    
+    
+    public void countdownToMeeting() {
+        timeMinutes = AppointmentDao.getNextAppointmentStartsIn(currentUserId);
+        nextAptWith = AppointmentDao.getNextAppointmentWith(currentUserId);
+        nextAptCustomer = CustomerDao.getCustomerName(nextAptWith);
+        Animation animation = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            
+            if(timeMinutes <= 15 && timeMinutes > 1) {
+                timeUntilNextAppointment.setText("Next meeting in " + String.valueOf(timeMinutes) + " minutes with "+ nextAptCustomer);
+                int time = (int) (15-timeMinutes);
+                progress.setProgress((time+.5)/15.0);
+            }
+            else if(timeMinutes > 15){
+                timeUntilNextAppointment.setText("Next meeting is more than 15 minutes away. Relax...");
+                progress.setProgress(0.0);
+            }
+            if (timeMinutes <= 1 && timeMinutes >= 0) {
+                timeUntilNextAppointment.setText("Next meeting with "+ nextAptCustomer + "is in LESS THAN ONE MINUTE! Get ready!");
+                if(progressBool = true){
+                    progress.setProgress(0.95);
+                    progressBool = false;
+                }
+                else {
+                    progress.setProgress(1.0);
+                    progressBool = true;
+                }
+            }
+            if(!allCustomerNames.isEmpty() || !allCustomers.isEmpty()){
+                timeMinutes = AppointmentDao.getNextAppointmentStartsIn(currentUserId);
+                nextAptWith = AppointmentDao.getNextAppointmentWith(currentUserId);
+                nextAptCustomer = CustomerDao.getCustomerName(nextAptWith);                
+            }
+        }));        
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.play();
         
     }
     
@@ -781,7 +829,10 @@ public class MainScreenController implements Initializable {
         int eHour = endHour.getValue();
         int eMinute = endMinute.getValue();
         String eAMPM = endAMPM.getValue();
-        
+
+// Document that weekends can still be work days        
+// TODO If appointment start is between the hours of 9am to 5pm then set appointment. Else put up error label. 
+
         String startTime = Time.dateToUTCString(sDate, sHour, sMinute, sAMPM);
         String endTime = Time.dateToUTCString(eDate, eHour, eMinute, eAMPM);        
         
@@ -808,15 +859,10 @@ public class MainScreenController implements Initializable {
         String customerName = CustomerDao.getCustomerName(customerId);
         
         int selectedAppointmentId = selectedAppointment.getAppointmentId();
- //----------------------- allCustomers is the index 
         int customerIndex = getCustomerIndex(customerId);
   
-//        customers_list.getSelectionModel().select(customerIndex); // -----
-        customers_list.getSelectionModel().select(customerIndex); // -----
-// ------------------       
-        
-        //appointmentCustomerName.setText(customerName);        
-        
+        customers_list.getSelectionModel().select(customerIndex); 
+                
         int selectedCustomerId = allCustomers.get(selectedindex).getCustomerId();
         int userId = currentUserId;
         String appointmentTitle = this.appointmentTitle.getText();
@@ -834,6 +880,9 @@ public class MainScreenController implements Initializable {
         int eHour = endHour.getValue();
         int eMinute = endMinute.getValue();
         String eAMPM = endAMPM.getValue();
+
+// Document that weekends can still be work days
+// TODO If appointment start is between the hours of 9am to 5pm then set appointment. Else put up error label.     
         
         String startTime = Time.dateToUTCString(sDate, sHour, sMinute, sAMPM);
         String endTime = Time.dateToUTCString(eDate, eHour, eMinute, eAMPM);        

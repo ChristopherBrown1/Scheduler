@@ -58,7 +58,7 @@
                   <VBox prefHeight="37.0" prefWidth="540.0">
                      <children>
                         <Label fx:id="timeUntilNextAppointment" text="Time until Next Appointment" />
-                        <ProgressBar prefHeight="20.0" prefWidth="245.0" progress="0.0" />
+                        <ProgressBar fx:id="progress" prefHeight="20.0" prefWidth="245.0" progress="0.0" />
                      </children>
                      <padding>
                         <Insets left="200.0" />

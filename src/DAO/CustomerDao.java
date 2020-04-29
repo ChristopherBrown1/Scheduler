@@ -210,36 +210,6 @@ public class CustomerDao {
         }        
     }
     
-//    public static int getCustomerId(int customerId){
-//
-//        try {
-//            String sql = "SELECT customerId\n" +
-//                        "FROM appointment\n" +
-//                        "WHERE appointmentId = ?";
-//
-//            DBQuery.SetPreparedStatement(connection, sql);           
-//            PreparedStatement ps = DBQuery.getPreparedStatement();
-//
-//            ps.setInt(1, customerId);
-//
-//            ps.execute();
-//            
-//            ResultSet result = ps.getResultSet();            
-//            if(result.next() == false) {
-//                System.out.println("CustomerId result is empty");                
-//            }
-//            else {
-//                int id = result.getInt("customerId");            
-//                                    
-//                return id;
-//            }                    
-//        }
-//        catch(Exception e) {
-//            System.out.println(e);
-//        }
-//        
-//        return -1;
-//    }
     
 
     public static String getCustomerName(int customerId){

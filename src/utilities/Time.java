@@ -57,10 +57,8 @@ public class Time {
            }
          DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          localFormat.setTimeZone(TimeZone.getDefault());
-         System.out.println(" Local: " + localFormat.format(utcTime));
          String lString = localFormat.format(utcTime);
          LocalDateTime l = LocalDateTime.parse(lString, f);
-         System.out.println("LDT = " + l);
          
          return l;
          
