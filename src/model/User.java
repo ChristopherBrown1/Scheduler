@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    CHRISTOPHER BROWN
+    C195 ADVANCED JAVA CONCEPTS
  */
 package model;
 
@@ -12,7 +11,7 @@ import java.util.Calendar;
  * @author brown
  */
 public class User {
-    
+
     private int userId;
     private String userName;
     private String password;
@@ -22,7 +21,6 @@ public class User {
     private Calendar lastUpdate;
     private String lastUpdateBy;
 
-    
     // to increase retrieval speed by looking up only the usernames and passwords upon login.
     public User(String userName, String password) {
 
@@ -30,7 +28,6 @@ public class User {
         this.password = password;
 
     }
-    
 
     public User(int userId, String userName, String password, boolean active, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
         this.userId = userId;
@@ -42,7 +39,6 @@ public class User {
         this.lastUpdate = lastUpdate;
         this.lastUpdateBy = lastUpdateBy;
     }
-
 
     public int getUserId() {
         return userId;
@@ -107,6 +103,5 @@ public class User {
     public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
     }
-    
-    
+
 }

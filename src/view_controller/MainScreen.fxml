@@ -150,7 +150,6 @@
                               <Insets left="125.0" right="150.0" />
                            </padding>
                         </Label>
-                        <Button mnemonicParsing="false" onMouseClicked="#report" text="Reports" />
                     </items>
                   </ToolBar>
                   <AnchorPane fx:id="modifyAppointmentView" prefHeight="907.0" prefWidth="836.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -280,10 +279,21 @@
                                           <Button fx:id="appointmentSave" mnemonicParsing="false" onMouseClicked="#appointmentSave" text="Save" />
                                        </children>
                                     </HBox>
-                                    <Label fx:id="error_appointment_label">
+                                    <Label fx:id="error_appointmentfields_label" text="error lable" textFill="#d30000" visible="false">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
                                        <VBox.margin>
                                           <Insets left="150.0" />
                                        </VBox.margin>
+                                    </Label>
+                                    <Label fx:id="error_appointment_label" text="error lable" textFill="#d30000">
+                                       <VBox.margin>
+                                          <Insets bottom="30.0" left="150.0" />
+                                       </VBox.margin>
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
                                     </Label>
                                  </children>
                               </VBox>
@@ -304,6 +314,9 @@
                         </GridPane>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="27.0" prefWidth="836.0" style="-fx-background-color: A9CCE3; -fx-border-color: #E0E0E0;" text="Appointment" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </AnchorPane>
                </children>
             </AnchorPane>
@@ -444,11 +457,20 @@
                   <Button fx:id="add_appointment" mnemonicParsing="false" onMouseClicked="#Add_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Add Appointment" textFill="#441515" />
                   <Button fx:id="update_appointment" mnemonicParsing="false" onMouseClicked="#Update_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Update Appointment" textFill="#441515" />
                   <Button mnemonicParsing="false" onMouseClicked="#Delete_Appointment_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Delete Appointement" textFill="#441515" />
+                  <Label fx:id="selectionErrorLabel" text="Error:" textFill="#bc0707" visible="false">
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
                </items>
             </ToolBar>
             <ToolBar minWidth="300.0" prefHeight="75.0" prefWidth="300.0" style="-fx-background-color: #F7DC6F; -fx-border-color: #D5F5E3; -fx-border-width: 2;">
                <items>
                   <Button fx:id="update_customer" mnemonicParsing="false" onMouseClicked="#Update_User_Clicked" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Update Customer" textFill="#441515" />
+                  <Button mnemonicParsing="false" onMouseClicked="#report" style="-fx-background-color: #D7BDE2; -fx-border-color: #C39BD3;" text="Reports" />
                </items>
                <padding>
                   <Insets left="50.0" />

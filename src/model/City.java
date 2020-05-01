@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    CHRISTOPHER BROWN
+    C195 ADVANCED JAVA CONCEPTS
  */
 package model;
 
@@ -12,14 +11,14 @@ import java.util.Calendar;
  * @author brown
  */
 public class City {
-    
+
     private int cityId;
     private String city;
     private int countryId;
     private Calendar createDate;
     private String createdBy;
     private Calendar lastUpdate;
-    private String lastUpdateBy;    
+    private String lastUpdateBy;
 
     public City(int cityId, String city, int countryId, Calendar createDate, String createdBy, Calendar lastUpdate, String lastUpdateBy) {
         this.cityId = cityId;
@@ -86,7 +85,5 @@ public class City {
     public void setLastUpdateBy(String lastUpdateBy) {
         this.lastUpdateBy = lastUpdateBy;
     }
-    
 
-    
 }

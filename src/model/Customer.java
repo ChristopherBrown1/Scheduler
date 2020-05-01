@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    CHRISTOPHER BROWN
+    C195 ADVANCED JAVA CONCEPTS
  */
 package model;
 
@@ -12,7 +11,7 @@ import java.util.Calendar;
  * @author brown
  */
 public class Customer {
-    
+
     private int customerId;
     private String customerName;
     private int addressId;
@@ -97,7 +96,4 @@ public class Customer {
         this.lastUpdateBy = lastUpdateBy;
     }
 
-
-    
-    
 }

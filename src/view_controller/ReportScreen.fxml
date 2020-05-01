@@ -18,7 +18,8 @@
                      </center>
                   </BorderPane>
                   <Button mnemonicParsing="false" onMouseClicked="#appointmentsByMonth" prefHeight="132.0" prefWidth="100.0" text="Number of&#10;Appointments&#10;Types By&#10;Month&#10;" textAlignment="CENTER" />
-                  <Button mnemonicParsing="false" onMouseClicked="#consultantSchedules" prefHeight="139.0" prefWidth="100.0" text="Consultant&#10;Schedules" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" onMouseClicked="#userSchedule" prefHeight="139.0" prefWidth="100.0" text="User&#10;Schedule" textAlignment="CENTER" />
+                  <Button mnemonicParsing="false" onMouseClicked="#customerSchedules" prefHeight="139.0" prefWidth="100.0" text="Customer&#10;Schedules" textAlignment="CENTER" />
                   <Button mnemonicParsing="false" onMouseClicked="#allPhoneNumbers" prefHeight="132.0" prefWidth="100.0" text="All&#10;Phone&#10;Numbers" textAlignment="CENTER" />
                </children>
             </VBox>
