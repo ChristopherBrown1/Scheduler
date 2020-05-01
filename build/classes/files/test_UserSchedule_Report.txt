@@ -4,19 +4,19 @@ Start: Apr, 24 2020 || 3:00PM       End: Apr, 24 2020 || 4:30PM
 Meeting with: Elizabeth E Newman | My Title | Full Staff
 Start: Apr, 24 2020 || 4:30PM       End: Apr, 24 2020 || 5:00PM
 
-Meeting with: Greg Swahoon | 4/27 | 6AM EST
+Meeting with: Greg Swahoon | Big meeting | All Staff
 Start: Apr, 27 2020 || 3:10PM       End: Apr, 27 2020 || 4:57PM
 
 Meeting with: John Doe | Test | Test
-Start: Apr, 28 2020 || 9:00AM       End: Apr, 28 2020 || 9:30AM
+Start: Apr, 28 2020 || 9:01AM       End: Apr, 28 2020 || 9:30AM
 
 Meeting with: Barbra Randalph | Test | Test
-Start: Apr, 28 2020 || 9:48AM       End: Apr, 28 2020 || 9:59AM
+Start: Apr, 28 2020 || 9:48AM       End: Apr, 28 2020 || 10:59AM
 
 Meeting with: John Smith | Test | Test
 Start: Apr, 28 2020 || 12:00PM       End: Apr, 28 2020 || 4:59PM
 
-Meeting with: Elizabeth E Newman | 4-5PM EST | Test
+Meeting with: Elizabeth E Newman | Very Important Meeting | Test
 Start: Apr, 30 2020 || 9:02AM       End: Apr, 30 2020 || 9:58AM
 
 Meeting with: Jean Randalph | Test | Test

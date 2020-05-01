@@ -77,7 +77,7 @@ public class UserDao {
                 String createdBy = result.getString("createdBy");
                 String lastUpdate = result.getString("lastUpdate");
                 Calendar lastUpdateCalendar = stringToCalendar(lastUpdate);
-                String lastUpdateBy = result.getString("lastUpdateBy");;
+                String lastUpdateBy = result.getString("lastUpdateBy");
 
                 userResult = new User(userId, userName, password, isActive, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 users.add(userResult); //add everything to the table
@@ -96,11 +96,14 @@ public class UserDao {
     public static User getLoggedInUser(String uName, String uPassword) {
         try {
             String sql = "SELECT * FROM user\n"
-                    + "WHERE userName = '" + uName + "' AND  password = '" + uPassword + "';";
+                    + "WHERE userName = ? AND  password = ?;";
 
-            DBQuery.ExecutePreparedStatement(connection, sql);
+            DBQuery.SetPreparedStatement(connection, sql);
             PreparedStatement ps = DBQuery.getPreparedStatement();
-            ResultSet result = ps.getResultSet();
+            
+            ps.setString(1, uName);
+            ps.setString(2, uPassword);
+            ResultSet result = ps.executeQuery();
             User userResult;
 
             result.next();

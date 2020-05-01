@@ -36,14 +36,14 @@ public class CountryDao {
             ObservableList<Country> countries = FXCollections.observableArrayList();
             while (result.next()) {
 
-                int countryId = result.getInt("countryId");;
+                int countryId = result.getInt("countryId");
                 String country = result.getString("country");
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar = stringToCalendar(createDate);
                 String createdBy = result.getString("createdBy");
                 String lastUpdate = result.getString("lastUpdate");
                 Calendar lastUpdateCalendar = stringToCalendar(lastUpdate);
-                String lastUpdateBy = result.getString("lastUpdateBy");;
+                String lastUpdateBy = result.getString("lastUpdateBy");
 
                 userResult = new Country(countryId, country, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 countries.add(userResult); //add everything to the table
@@ -72,14 +72,14 @@ public class CountryDao {
             ObservableList<Country> countries = FXCollections.observableArrayList();
             while (result.next()) {
 
-                int countryId = result.getInt("countryId");;
+                int countryId = result.getInt("countryId");
                 String country = result.getString("country");
                 String createDate = result.getString("createDate");
                 Calendar createDateCalendar = stringToCalendar(createDate);
                 String createdBy = result.getString("createdBy");
                 String lastUpdate = result.getString("lastUpdate");
                 Calendar lastUpdateCalendar = stringToCalendar(lastUpdate);
-                String lastUpdateBy = result.getString("lastUpdateBy");;
+                String lastUpdateBy = result.getString("lastUpdateBy");
 
                 userResult = new Country(countryId, country, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 countries.add(userResult); //add everything to the table

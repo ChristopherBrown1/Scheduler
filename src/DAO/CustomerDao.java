@@ -38,7 +38,7 @@ public class CustomerDao {
             ObservableList<Customer> customers = FXCollections.observableArrayList();
             while (result.next()) {
 
-                int customerId = result.getInt("customerId");;
+                int customerId = result.getInt("customerId");
                 String customerName = result.getString("customerName");
                 int addressId = result.getInt("addressId");
                 int active = result.getInt("active"); //this comes in as an integer 1 for true 0 for false
@@ -52,7 +52,7 @@ public class CustomerDao {
                 String createdBy = result.getString("createdBy");
                 String lastUpdate = result.getString("lastUpdate");
                 Calendar lastUpdateCalendar = stringToCalendar(lastUpdate);
-                String lastUpdateBy = result.getString("lastUpdateBy");;
+                String lastUpdateBy = result.getString("lastUpdateBy");
 
                 userResult = new Customer(customerId, customerName, addressId, isActive, createDateCalendar, createdBy, lastUpdateCalendar, lastUpdateBy); //get the user info
                 customers.add(userResult); //add everything to the table

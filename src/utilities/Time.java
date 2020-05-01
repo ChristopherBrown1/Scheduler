@@ -161,21 +161,21 @@ public class Time {
     public static LocalDateTime getNextWeek() {
 
         LocalDateTime today = LocalDateTime.now();
-        System.out.println("Current date: " + today);
+        //System.out.println("Current date: " + today);
 
         //add 1 week to the current date
         LocalDateTime nextWeek = today.plus(1, ChronoUnit.WEEKS);
-        System.out.println("Next week: " + nextWeek);
+        //System.out.println("Next week: " + nextWeek);
         return nextWeek;
     }
 
     public static LocalDateTime getNextMonth() {
         LocalDateTime today = LocalDateTime.now();
-        System.out.println("Current date: " + today);
+        //System.out.println("Current date: " + today);
 
         //add 1 week to the current date
         LocalDateTime nextMonth = today.plus(1, ChronoUnit.MONTHS);
-        System.out.println("Next month: " + nextMonth);
+        //System.out.println("Next month: " + nextMonth);
         return nextMonth;
     }
 
