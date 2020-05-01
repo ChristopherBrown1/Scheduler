@@ -1,3 +1,0 @@
-Test: 2
-Check: 1
-Scrum: 1
